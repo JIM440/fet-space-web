@@ -1,7 +1,4 @@
-import Login from '@/pages/auth/sign-in';
+import Login from "@/pages/auth/sign-in";
+import { Route } from "react-router-dom";
 
-export const authRoutes =
-  {
-    path: '/login',
-    element: <Login />,
-  }
+export const authRoutes = <Route path="/login" element={<Login />} />;

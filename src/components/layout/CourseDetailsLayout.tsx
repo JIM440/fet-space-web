@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useParams, useLocation, useNavigate } from 'react-router-dom';
 import ThemedText from '@/components/commons/typography/ThemedText';
 import AddOptionsDialog from '@/pages/protected/course-details/components/AddOptionsDialog';
+import { useTeacherCourses } from '@/hooks/api';
+import { useAuth } from '@/context/auth';
+import type RevisionQuestions from '@/pages/protected/revisions-questions/RevisionQuestions';
 
 interface CourseProps {
-  id: number;
+  course_id: number;
   courseCode: string;
   title: string;
+  subtitle?: string;
   description?: string;
 }
-
-const courses: CourseProps[] = [
-  { id: 1, courseCode: "CS101", title: "Introduction to Programming", description: "Learn the basics of programming with Python." },
-];
 
 const tabPathMap: { [key: string]: string } = {
   Announcements: 'announcements',
   Content: 'content',
   Assignments: 'assignments',
-  People: 'people'
+  People: 'people',
+  RevisionQuestions: 'revision-questions',
 };
 
 const pathTabMap = Object.fromEntries(Object.entries(tabPathMap).map(([tab, path]) => [path, tab]));
@@ -27,34 +28,38 @@ const CourseDetailsLayout: React.FC = () => {
   const { courseId: id } = useParams<{ courseId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const [course, setCourse] = useState<CourseProps | undefined>(undefined);
+  const { accessToken } = useAuth();
+  const { data: courses, isLoading, error } = useTeacherCourses(accessToken);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   // Determine active tab from current path
   const pathSegment = location.pathname.split('/')[3]; // e.g., 'announcements' from '/courses/1/announcements'
   const activeTab = pathTabMap[pathSegment] || 'Announcements';
 
-  useEffect(() => {
-    if (id) {
-      setCourse(courses.find((course) => course.id === parseInt(id)));
-    }
-  }, [id]);
-
-  if (!course) {
-    return <ThemedText className="text-center py-4">Loading...</ThemedText>;
-  }
+  const course = courses?.find((course: CourseProps) => course.course_id === parseInt(id || ''));
 
   const handleTabClick = (tab: string) => {
     const path = tabPathMap[tab];
     navigate(`/courses/${id}/${path}`);
   };
 
+  if (isLoading) {
+    return <ThemedText className="text-center py-4">Loading...</ThemedText>;
+  }
+
+  if (error || !course) {
+    return <ThemedText className="text-center py-4">Error: {error?.message || 'Course not found'}</ThemedText>;
+  }
+
   return (
     <div>
       <header className="bg-white dark:bg-gray-800 shadow-md p-4">
-        <button className="flex items-center text-gray-600 dark:text-gray-300">
+        <button
+          className="flex items-center text-gray-600 dark:text-gray-300"
+          onClick={() => navigate('/courses')}
+        >
           <span className="material-icons mr-2">arrow_back</span>
-          <span className="font-semibold">{course.courseCode}</span>
+          <span className="font-semibold">{course.code}</span>
         </button>
       </header>
       <div className="relative">
@@ -73,17 +78,17 @@ const CourseDetailsLayout: React.FC = () => {
       <div className="container mx-auto p-4">
         <div className="space-y-4">
           <ThemedText variant="h3" className="text-gray-900 dark:text-gray-100">
-            {course.courseCode + ": " + course.title}
+            {course.code + ": " + course.title}
           </ThemedText>
           {course.description && (
             <ThemedText className="text-gray-700 dark:text-gray-300">{course.description}</ThemedText>
           )}
           <div className="flex flex-col sm:flex-row justify-between">
             <ThemedText variant="caption" className="text-gray-600 dark:text-gray-400">
-              Created at: 12/12/2023
+              Created at: {course.created_at}
             </ThemedText>
             <ThemedText variant="caption" className="text-gray-600 dark:text-gray-400">
-              350 Students
+              {course.studentsCount} Students
             </ThemedText>
           </div>
         </div>

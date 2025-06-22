@@ -31,6 +31,9 @@ const Sidebar = () => {
 
       {/* links */}
       <div>
+        <SidebarLink to="/announcements" iconSrc="../../src/assets/icons/courses.svg">
+          announcements
+        </SidebarLink>
         <SidebarLink to="/courses" iconSrc="../../src/assets/icons/courses.svg">
           Courses
         </SidebarLink>
