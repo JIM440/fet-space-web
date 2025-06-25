@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import ThemedText from '@/components/commons/typography/ThemedText';
 import InputEmail from '@/components/commons/inputs/InputEmail';
 import InputMatricule from '@/components/commons/inputs/InputMatricule';
@@ -55,15 +55,15 @@ const SignIn: React.FC = () => {
 
   return (
     <ContentContainer>
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex items-center justify-center p-4 h-[calc(100vh-40px)]">
         <div className="w-full max-w-md">
           <div className="text-center">
-            <div className="w-24 h-24 rounded-full mx-auto mb-6 bg-gray-600" />
+            <div className="w-24 h-24 rounded-full mx-auto mb-6 bg-background-neutral" />
             <ThemedText className="text-xl font-semibold mb-4">Sign In As:</ThemedText>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-36 p-2 mb-6 text-gray-900 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 border-none rounded"
+              className="w-36 p-2 mb-6 text-neutral-text-secondary bg-background-neutral border-none rounded"
             >
               {roles.map((role) => (
                 <option key={role.value} value={role.value}>
@@ -73,9 +73,9 @@ const SignIn: React.FC = () => {
             </select>
           </div>
           <div className="space-y-4">
-            {error && <p className="text-red-500 text-center">{error.message || 'Login failed'}</p>}
+            {error && <p className="text-error text-center">{error.message || 'Login failed'}</p>}
             {role === 'Teacher' ? (
-              <>
+              <div className='flex flex-col gap-2'>
                 <InputEmail
                   label="Email"
                   value={email}
@@ -90,9 +90,9 @@ const SignIn: React.FC = () => {
                   onValidChange={setPasswordValid}
                   placeholder="Enter your password"
                 />
-              </>
+              </div>
             ) : (
-              <>
+              <div className='flex flex-col gap-2'>
                 <InputMatricule
                   label="Matricule"
                   value={matricule}
@@ -107,11 +107,15 @@ const SignIn: React.FC = () => {
                   onValidChange={setPasswordValid}
                   placeholder="Enter your password"
                 />
-              </>
+              </div>
             )}
+            <div className='flex justify-end'>
+            <Link to="/auth/forgot-password" className="text-neutral-text-secondary text-right text-sm hover:underline mt-[-16px]">
+              Forgot Password?
+            </Link>
+            </div>
             <Button
-              variant="outline"
-              className="mt-6 w-full"
+              className="mt-4 w-full"
               disabled={!isFormValid() || isLoading}
               onClick={handleSignIn}
             >

@@ -1,72 +1,104 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ThemedText from "../commons/typography/ThemedText";
+import { X } from "lucide-react";
 
-const Sidebar = () => {
-  const location = useLocation();
-
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   // Переиспользуемый компонент для ссылок
-  const SidebarLink = ({ to, iconSrc, children }) => {
-    const isActive = location.pathname.includes(to);
+  const logout = () => {
+  localStorage.clear(); // Clear all local storage
+  window.location.href = '/login'; // Redirect to login page
+};
 
+
+  const SidebarLink = ({ to, iconSrc, children }) => {
     return (
-      <Link
+      <NavLink
         to={to}
-        className={`flex flex-row justify-start items-center gap-4 py-5 px-5 
-          ${
-            isActive
-              ? "bg-amber-600 text-white font-semibold" // стили для активной ссылки
-              : "text-black hover:bg-amber-300"
-          }`}
+        className={({ isActive }) =>
+          `flex flex-row justify-start items-center gap-4 py-5 px-5 ${
+            isActive ? "bg-background-neutral" : ""
+          }`
+        }
+        end
+        onClick={() => window.innerWidth < 768 && toggleSidebar()} // Close sidebar on link click for mobile
       >
         <img src={iconSrc} alt={`${children} icon`} className="w-6 h-6" />
         <ThemedText>{children}</ThemedText>
-      </Link>
+      </NavLink>
     );
   };
 
   return (
-    <div className="w-[245px] max-[250px] min-[240px] bg-amber-400 flex flex-col py-12 gap-8 h-[100vh] overflow-y-auto">
-      <div className="w-16 h-16 min-h-16 rounded-full bg-amber-500 self-center"></div>
+    <>
+      {/* Overlay for mobile when sidebar is open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={toggleSidebar}
+        ></div>
+      )}
 
-      {/* links */}
-      <div>
-        <SidebarLink to="/announcements" iconSrc="../../src/assets/icons/courses.svg">
-          announcements
-        </SidebarLink>
-        <SidebarLink to="/courses" iconSrc="../../src/assets/icons/courses.svg">
-          Courses
-        </SidebarLink>
-
-        <SidebarLink
-          to="/upcoming-deadlines"
-          iconSrc="../../src/assets/icons/upcoming-deadlines.svg"
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 z-30 w-[245px] flex flex-col py-12 gap-8 h-[100vh] overflow-y-auto bg-background-main border-r-1 border-neutral-border transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:static md:w-[245px]`}
+      >
+        <button
+          className="absolute top-4 right-4 md:hidden"
+          onClick={toggleSidebar}
         >
-          Upcoming Deadlines
-        </SidebarLink>
+          <X className="h-6 w-6 text-neutral-text-secondary" />
+        </button>
 
-        <SidebarLink
-          to="/about-fet"
-          iconSrc="../../src/assets/icons/about-fet.svg"
-        >
-          About FET
-        </SidebarLink>
+        <div className="w-16 h-16 min-h-16 rounded-full bg-background-neutral self-center"></div>
 
-        <SidebarLink
-          to="/curriculums"
-          iconSrc="../../src/assets/icons/curriculums.svg"
+        {/* links */}
+        <div>
+          <SidebarLink
+            to="/announcements"
+            iconSrc="../../src/assets/icons/courses.svg"
+          >
+            Announcements
+          </SidebarLink>
+          <SidebarLink to="/courses" iconSrc="../../src/assets/icons/courses.svg">
+            Courses
+          </SidebarLink>
+          <SidebarLink
+            to="/upcoming-deadlines"
+            iconSrc="../../src/assets/icons/upcoming-deadlines.svg"
+          >
+            Upcoming Deadlines
+          </SidebarLink>
+          <SidebarLink
+            to="/about-fet"
+            iconSrc="../../src/assets/icons/about-fet.svg"
+          >
+            About FET
+          </SidebarLink>
+          <SidebarLink
+            to="/curriculums"
+            iconSrc="../../src/assets/icons/curriculums.svg"
+          >
+            Curriculums
+          </SidebarLink>
+          <SidebarLink
+            to="/help-and-support"
+            iconSrc="../../src/assets/icons/help&support.svg"
+          >
+            Help & Support
+          </SidebarLink>
+        </div>
+        <div className="absolute bottom-4 left-4 right-4">
+        <button
+          onClick={logout}
+          className="w-full text-error mt-[auto] py-2 px-4 rounded-md"
         >
-          Curriculums
-        </SidebarLink>
-
-        <SidebarLink
-          to="/help-and-support"
-          iconSrc="../../src/assets/icons/help&support.svg"
-        >
-          Help & Support
-        </SidebarLink>
+          Logout
+        </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

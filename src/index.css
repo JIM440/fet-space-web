@@ -1,8 +1,5 @@
-
 @import "tailwindcss";
 @import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -11,7 +8,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -50,20 +46,56 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-      /* Light Theme */
-    --primary-base: #008BCC;
-    --primary-10: #33AADD;
-    --background-main: #FFFFFF;
-    --background-neutral: #EBEBF2;
-    --background-secondary: #F0F0F0;
-    --background-light: #98CCE3;
-    --neutral-text-primary: #1A1A1A;
-    --neutral-text-secondary: #2F2F2F;
-    --neutral-text-tertiary: #4A4A4A;
-    --neutral-border: #EBEBF2;
-    --error: #FF3830;
-    --white: #F5F5F5;
-    --black: #1A1A1A;
+    /* Light Theme */
+  --primary-base: #008bcc;
+  --primary-10: #33aadd;
+  --background-main: #ffffff;
+  --background-neutral: #ebebf2;
+  --background-secondary: #f0f0f0;
+  --background-light: #98cce3;
+  --neutral-text-primary: #1a1a1a;
+  --neutral-text-secondary: #2f2f2f;
+  --neutral-text-tertiary: #4a4a4a;
+  --neutral-border: #ebebf2;
+  --error: #ff3830;
+  --white: #f5f5f5;
+  --black: #1a1a1a;
+}
+
+@theme {
+  /* Light Theme */
+  --color-primary-base: #008bcc;
+  --color-primary-10: #33aadd;
+  --color-background-main: #ffffff;
+  --color-background-neutral: #ebebf2;
+  --color-background-secondary: #f0f0f0;
+  --color-background-light: #98cce3;
+  --color-neutral-text-primary: #1a1a1a;
+  --color-neutral-text-secondary: #2f2f2f;
+  --color-neutral-text-tertiary: #4a4a4a;
+  --color-neutral-border: #ebebf2;
+  --color-error: #ff3830;
+  --color-white: #f5f5f5;
+  --color-black: #1a1a1a;
+}
+
+@layer base {
+  [data-theme="dark"] {
+    /* Dark Theme */
+    --color-primary-base: #008bcc;
+    --color-primary-10: #0378b3;
+    --color-background-main: #1a1a1a;
+    --color-background-neutral: #303030;
+    --color-background-secondary: #202020;
+    --color-background-light: #1e3a4d;
+    --color-neutral-text-primary: #f5f5f5;
+    --color-neutral-text-secondary: #c4c4c4;
+    --color-neutral-text-tertiary: #a1a1a1;
+    --color-neutral-border: #303030;
+    --color-error: #b3261e;
+    --color-white: #f5f5f5;
+    --color-black: #1a1a1a;
+  }
 }
 
 a {
@@ -74,6 +106,20 @@ body {
   margin: 0;
   /* min-height: 100vh; */
   padding: 0;
+  background-color: var(--color-background-main);
+}
+
+input{
+  outline: none;
+}
+
+button {
+  outline: none;
+  cursor: pointer;
+}
+
+textarea{
+  outline: none;
 }
 
 @theme inline {
@@ -114,28 +160,3 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-  .dark {
-    /* Dark Theme */
-    --primary-base: #008BCC;
-    --primary-10: #0378B3;
-    --background-main: #1A1A1A;
-    --background-neutral: #303030;
-    --background-secondary: #202020;
-    --background-light: #1E3A4D;
-    --neutral-text-primary: #F5F5F5;
-    --neutral-text-secondary: #C4C4C4;
-    --neutral-text-tertiary: #A1A1A1;
-    --neutral-border: #303030;
-    --error: #B3261E;
-    --white: #F5F5F5;
-    --black: #1A1A1A;
-  }

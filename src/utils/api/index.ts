@@ -17,7 +17,7 @@ export const fetchTeacherCourses = async () => {
 };
 
 export const createCourse = async (data: { code: string, title: string; subtitle: string, description: string }) => {
-  const response = await api.post('/teacher/courses', data);
+  const response = await api.post('/teacher/courses/create', data);
   return response.data;
 };
 
@@ -38,11 +38,6 @@ export const createCourseAnnouncement = async (data: { courseId: number; title: 
 
 export const fetchComments = async (type: string, targetId: number, page: number = 1, limit: number = 10) => {
   const response = await api.get(`/comments?type=${type}&targetId=${targetId}&page=${page}&limit=${limit}`);
-  return response.data;
-};
-
-export const createComment = async (data: { type: string; targetId: number; content: string }) => {
-  const response = await api.post('/comments', data);
   return response.data;
 };
 
@@ -87,21 +82,18 @@ export const getCourseContents = async (courseId: number): Promise<any> => {
 };
 
 export const uploadCourseContent = async (courseId: number, file: File) => {
-  const { url, file_type, originalName } = await uploadToCloudinary(file, 'course_content');
+  const { url, file_type } = await uploadToCloudinary(file, 'course_content');
   const response = await api.post(`/teacher/courses/${courseId}/content`, {
     url,
-    file_type,
-    // title: originalName, // Include title if required by schema
-  });
+    file_type  });
   return response.data;
 };
 
 export const uploadRevisionQuestions = async (courseId: number, file: File) => {
-  const { url, file_type, originalName } = await uploadToCloudinary(file, 'revision_questions');
+  const { url, file_type } = await uploadToCloudinary(file, 'revision_questions');
   const response = await api.post(`/teacher/courses/${courseId}/revision-questions`, {
     url,
     file_type,
-    // title: originalName, // Include title if required by schema
   });
   return response.data;
 };

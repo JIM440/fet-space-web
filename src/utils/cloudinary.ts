@@ -1,4 +1,18 @@
-export const uploadToCloudinary = async (file: File, folder: string): Promise<{ url: string; file_type: string; originalName: string }> => {
+export const mimeToFileTypeMap: { [key: string]: 'pdf' | 'docx' | 'img' | 'ppt' | 'video' } = {
+  'application/pdf': 'pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+  'image/jpeg': 'img',
+  'image/png': 'img',
+  'image/gif': 'img',
+  'application/vnd.ms-powerpoint': 'ppt',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'ppt',
+  'video/mp4': 'video',
+  'video/avi': 'video',
+  'video/mov': 'video',
+  'video/quicktime': 'video', // For .mov files
+};
+
+export const uploadToCloudinary = async (file: File, folder: string): Promise<{ url: string; file_type: 'pdf' | 'docx' | 'img' | 'ppt' | 'video'; originalName: string }> => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', 'fet_space_sms'); // Replace with your actual preset
@@ -17,9 +31,10 @@ export const uploadToCloudinary = async (file: File, folder: string): Promise<{ 
   }
 
   const data = await response.json();
+  const fileType = mimeToFileTypeMap[file.type] || 'img'; // Default to 'img' if MIME type not recognized
   return {
     url: data.secure_url,
-    file_type: file.type.split('/')[1] || 'unknown', // Use file's MIME type extension
+    file_type: fileType,
     originalName: file.name,
   };
 };

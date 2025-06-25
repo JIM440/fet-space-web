@@ -4,26 +4,28 @@ import CourseList from './components/CourseList';
 import ContentContainer from '@/components/commons/containers/ContentContainer';
 import { useTeacherCourses } from '@/hooks/api';
 import { useAuth } from '@/context/auth';
+import ErrorComponent from '@/components/commons/error/ErrorComponent';
+import CardsSkeleton from '@/components/commons/loader/CardsSkeleton';
 
 const Courses = () => {
   const { accessToken } = useAuth();
-  const { data: courses, isLoading, error } = useTeacherCourses(accessToken);
+  const { data: courses, isLoading, error, refetch } = useTeacherCourses(accessToken);
 
   if (isLoading) {
     return (
       <ContentContainer>
         <TopCoursesBar />
-        <div>Loading...</div>
+        <CardsSkeleton />
       </ContentContainer>
     );
   }
 
   if (error) {
     return (
-      <ContentContainer>
-        <TopCoursesBar />
-        <div>Error: {error.message || 'Failed to fetch courses'}</div>
-      </ContentContainer>
+      <>
+      <TopCoursesBar />
+      <ErrorComponent message={`Error: ${error.message || 'Failed to fetch courses'}`} onRetry={refetch} />
+      </>
     );
   }
 

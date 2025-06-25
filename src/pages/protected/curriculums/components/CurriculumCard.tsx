@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 const CurriculumCard = ({curriculum}) => {
   return (
-    <Link to={`/curriculums/${curriculum.id}`} className='p-5 bg-red-600'>
+    <Link to={`/curriculums/${curriculum.id}`} className='p-5 border-1 border-neutral-border'>
       <ThemedText variant='h3'>{curriculum.title}</ThemedText>
     </Link>
   )

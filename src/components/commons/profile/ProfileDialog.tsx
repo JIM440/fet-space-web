@@ -12,7 +12,7 @@ export function ProfileDialog() {
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <div className="cursor-pointer w-8 h-8 bg-amber-500 rounded-full">
+          <div className="cursor-pointer w-8 h-8 bg-background-neutral rounded-full">
             {/* <AvatarFallback>JD</AvatarFallback> */}
           </div>
         </DialogTrigger>
@@ -32,7 +32,7 @@ export function ProfileDialog() {
               />
             </div>
             <div className="text-center md:text-left">
-              <ThemedText variant="h3" className="text-gray-900 dark:text-gray-100">
+              <ThemedText variant="h3">
                 Njeck Dorothy Ambe
               </ThemedText>
               <ThemedText className="text-gray-600 dark:text-gray-400">FE21A504</ThemedText>

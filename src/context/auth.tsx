@@ -49,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshAccessToken = async (): Promise<string> => {
     if (!refreshToken) throw new Error('No refresh token available');
     try {
+      console.log('refreshing tokens...')
       const response = await api.post('/auth/refresh', { refreshToken });
       const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
 

@@ -24,21 +24,21 @@ const ThemedText: React.FC<ThemedTextProps> = ({
     const baseStyles = "text-neutral-text-secondary";
     switch (variant) {
       case "h1":
-        return `${baseStyles} text-3xl font-bold leading-9`;
+        return `text-3xl font-bold leading-9 ${baseStyles}`;
       case "h2":
-        return `${baseStyles} text-2xl font-semibold leading-7`;
+        return `text-2xl font-semibold leading-7 ${baseStyles}`;
       case "h3":
-        return `${baseStyles} text-lg font-semibold leading-6`;
+        return `text-lg font-semibold leading-6 ${baseStyles}`;
       case "h4":
-        return `${baseStyles} text-base font-semibold leading-5`;
+        return `text-base font-semibold leading-5 ${baseStyles} `;
       case "body":
-        return `${baseStyles} text-sm font-normal leading-5`;
+        return `text-sm font-normal leading-5 ${baseStyles}`;
       case "small":
-        return `text-neutralTextTertiary text-xs font-normal leading-4.5`;
+        return `text-neutral-text-tertiary text-xs font-normal leading-4.5 ${baseStyles}`;
       case "caption":
-        return `text-neutralTextTertiary text-xs font-normal leading-4 tracking-wider`;
+        return `text-neutral-text-tertiary text-xs font-normal leading-4 tracking-wider ${baseStyles}`;
       default:
-        return `${baseStyles} text-sm font-normal leading-5`;
+        return `text-sm font-normal leading-5 ${baseStyles}`;
     }
   };
 

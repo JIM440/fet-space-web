@@ -43,10 +43,9 @@ const InputPassword: React.FC<InputPasswordProps> = ({
       />
       <button
         onClick={toggleSecureEntry}
-        className="absolute right-3 top-12 transform -translate-y-1/2 p-1"
+        className="absolute right-3 top-10"
       >
-        <span className="material-icons"
-        //  style={{ color: colors.neutralTextSecondary }}
+        <span className="material-icons text-neutral-text-secondary"
         >
 
           {isSecure ? 'visibility_off' : 'visibility'}

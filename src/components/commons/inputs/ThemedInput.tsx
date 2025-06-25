@@ -38,7 +38,7 @@ const ThemedInput: React.FC<ThemedInputProps> = ({
 
   return (
     <div className="mb-4 w-full">
-      <ThemedText variant="body" className="text-gray-600 dark:text-gray-400 mb-2">
+      <ThemedText variant="body" className="mb-2">
         {label ? `${label}:` : ''}
       </ThemedText>
       <input
@@ -46,7 +46,7 @@ const ThemedInput: React.FC<ThemedInputProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full p-3 border rounded-lg text-gray-900 dark:text-gray-100"
+        className="w-full p-3 border border-neutral-border rounded-lg text-neutral-text-secondary"
         style={inputStyle}
         {...rest}
       />

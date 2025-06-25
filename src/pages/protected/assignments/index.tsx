@@ -1,27 +1,58 @@
-// pages/protected/course-details/assignments/Assignments.tsx
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useGetCourseAssignments } from '@/hooks/api/courses';
 import ThemedText from '@/components/commons/typography/ThemedText';
-import AssignmentCard from '@/components/commons/cards/AssignmentCard'; // Assuming this exists
+import AssignmentCard from '@/components/commons/cards/AssignmentCard';
+
+interface Assignment {
+  assignment_id: number;
+  title: string;
+  description: string | null;
+  due_date: string | null;
+  created_at: string;
+}
 
 const Assignments = () => {
   const { courseId } = useParams<{ courseId: string }>();
-  const { data: assignments, isLoading, isError, error } = useGetCourseAssignments(parseInt(courseId));
+  const { data: assignments, isLoading, isError, error } = useGetCourseAssignments(parseInt(courseId!));
 
   if (isLoading) {
-    return <div className="text-center py-4">Loading...</div>;
+    return <div className="text-center py-4 text-white">Loading...</div>;
   }
 
-  if (isError || !assignments) {
-    return <ThemedText className="text-center py-4">Error: {error?.message || 'Failed to load assignments'}</ThemedText>;
+  if (isError) {
+    return <ThemedText className="text-center py-4 text-red-500">Error: {error?.message || 'Failed to load assignments'}</ThemedText>;
   }
 
   return (
-    <div>
-      {assignments.map((assignment: any) => (
-        <AssignmentCard key={assignment.assignment_id} assignment={assignment} />
-      ))}
+    <div className="p-4">
+      {assignments && assignments.length > 0 ? (
+        assignments.map((assignment: Assignment) => (
+          <div key={assignment.assignment_id} className="mb-2">
+            <AssignmentCard
+              assignment={{
+                id: assignment.assignment_id,
+                title: assignment.title,
+                description: assignment.description || 'No description',
+                date: assignment.due_date ? new Date(assignment.due_date).toLocaleDateString() : 'No due date',
+              }}
+            />
+            <Link
+              to={`/courses/${courseId}/assignments/${assignment.assignment_id}`}
+              className="ml-2 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 inline-block"
+            >
+              View Details
+            </Link>
+          </div>
+        ))
+      ) : (<>
+        <ThemedText className="text-center py-4 text-gray-400">No assignments created yet!</ThemedText>
+              <ThemedText className='text-center'
+        >
+        Click the button (+) below to create a new assignment.
+      </ThemedText>
+        </>
+      )}
     </div>
   );
 };

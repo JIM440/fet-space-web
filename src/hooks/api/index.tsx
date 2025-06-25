@@ -3,16 +3,22 @@ import {
   login,
   fetchTeacherCourses,
   createCourse,
-  fetchGeneralAnnouncements,
   fetchCourseAnnouncements,
   createCourseAnnouncement,
   fetchComments,
-  createComment,
-  fetchPollResponses,
-  respondToPoll,
   api,
 } from "@/utils/api";
+import {
+  getAnnouncementDetails,
+  getPollResponses,
+  createComment,
+} from '@/utils/api/announcementApi';
+import { io, Socket } from 'socket.io-client';
+import { useEffect } from 'react';
 
+const socket: Socket = io('http://localhost:8989');
+
+// Authentication
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -31,6 +37,7 @@ export const useLogin = () => {
   });
 };
 
+// Teacher Courses
 export const useTeacherCourses = (accessToken: string | null) => {
   return useQuery({
     queryKey: ["teacherCourses"],
@@ -43,7 +50,6 @@ export const useCreateCourse = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
-      accessToken,
       data,
     }: {
       accessToken: string;
@@ -60,14 +66,7 @@ export const useCreateCourse = () => {
   });
 };
 
-export const useGeneralAnnouncements = (accessToken: string | null) => {
-  return useQuery({
-    queryKey: ["generalAnnouncements"],
-    queryFn: () => fetchGeneralAnnouncements(),
-    enabled: !!accessToken,
-  });
-};
-
+// Course Announcements
 export const useCourseAnnouncements = (
   accessToken: string | null,
   courseId: number
@@ -83,10 +82,8 @@ export const useCreateCourseAnnouncement = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
-      accessToken,
       data,
     }: {
-      accessToken: string;
       data: { courseId: number; title: string; content: string };
     }) => createCourseAnnouncement(data),
     onSuccess: (_, variables) => {
@@ -97,67 +94,7 @@ export const useCreateCourseAnnouncement = () => {
   });
 };
 
-export const useComments = (
-  accessToken: string | null,
-  type: string,
-  targetId: number
-) => {
-  return useQuery({
-    queryKey: ["comments", type, targetId],
-    queryFn: () => fetchComments(type, targetId),
-    enabled: !!accessToken && !!type && !!targetId,
-  });
-};
-
-export const useCreateComment = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      accessToken,
-      data,
-    }: {
-      accessToken: string;
-      data: { type: string; targetId: number; content: string };
-    }) => createComment(data),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ["comments", variables.data.type, variables.data.targetId],
-      });
-    },
-  });
-};
-
-export const usePollResponses = (
-  accessToken: string | null,
-  pollId: number
-) => {
-  return useQuery({
-    queryKey: ["pollResponses", pollId],
-    queryFn: () => fetchPollResponses(pollId),
-    enabled: !!accessToken && !!pollId,
-  });
-};
-
-export const useRespondToPoll = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      accessToken,
-      pollId,
-      optionId,
-    }: {
-      accessToken: string;
-      pollId: number;
-      optionId: number;
-    }) => respondToPoll(pollId, optionId),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ["pollResponses", variables.pollId],
-      });
-    },
-  });
-};
-
+// Search Functionality
 export const useSearchStudent = (query: string, courseId: number) => {
   return useQuery({
     queryKey: ["searchStudents", query, courseId],
@@ -178,7 +115,6 @@ export const useSearchStudent = (query: string, courseId: number) => {
   });
 };
 
-// Search for teachers
 export const useSearchTeacher = (query: string, courseId: number) => {
   return useQuery({
     queryKey: ["searchTeachers", query, courseId],
@@ -199,7 +135,7 @@ export const useSearchTeacher = (query: string, courseId: number) => {
   });
 };
 
-// Add student to course
+// Course Management
 export const useAddStudentToCourse = () => {
   return useMutation({
     mutationFn: async ({
@@ -218,7 +154,6 @@ export const useAddStudentToCourse = () => {
   });
 };
 
-// Add teacher to course
 export const useAddTeacherToCourse = () => {
   return useMutation({
     mutationFn: async ({
@@ -235,5 +170,114 @@ export const useAddTeacherToCourse = () => {
       );
       return response.data;
     },
+  });
+};
+
+// Announcements (Restricted for Teachers)
+export const useGetAnnouncements = () => {
+  return useQuery({
+    queryKey: ['announcements'],
+    queryFn: () => api.get('/announcements/general').then((res) => res.data),
+  });
+};
+
+export const useGetAnnouncementDetails = (announcementId: number) => {
+  return useQuery({
+    queryKey: ['announcements', announcementId],
+    queryFn: () => getAnnouncementDetails(announcementId),
+    enabled: !!announcementId,
+  });
+};
+
+// Polls (Restricted for Teachers)
+export const useRespondToPoll = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { pollId: number; optionId: number }) => {
+      const response = await api.post('/polls/respond', data);
+      return response.data;
+    },
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['pollResponses', response.pollId] });
+      queryClient.invalidateQueries({ queryKey: ['announcements'] });
+    },
+  });
+};
+
+// Comments (Restricted for Teachers)
+export const useGetComments = (type: string, targetId: number) => {
+  return useQuery({
+    queryKey: ['comments', type, targetId],
+    queryFn: () => fetchComments(type, targetId),
+    enabled: !!targetId,
+  });
+};
+
+export const useCreateComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { type: string; targetId: number; content: string }) => {
+      const response = await createComment(data.type, data.targetId, data.content);
+      return response.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['comments', variables.type, variables.targetId] });
+      queryClient.invalidateQueries({ queryKey: ['announcement', variables.targetId] });
+    },
+  });
+};
+
+// Socket Integration
+export const useAnnouncementSocket = () => {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    socket.emit('join', 'generalAnnouncements');
+    socket.on('newAnnouncement', (announcement) => {
+      queryClient.setQueryData(['announcements'], (oldData: any) => {
+        return oldData ? [announcement, ...oldData] : [announcement];
+      });
+    });
+    socket.on('updateAnnouncement', (announcement) => {
+      queryClient.setQueryData(['announcement', announcement.announcement_id], announcement);
+    });
+    socket.on('deleteAnnouncement', ({ announcementId }) => {
+      queryClient.setQueryData(['announcements'], (oldData: any) => {
+        return oldData?.filter((a: any) => a.announcement_id !== announcementId);
+      });
+    });
+    socket.on('newPoll', (poll) => {
+      queryClient.setQueryData(['announcement', poll.general_announcement_id], (oldData: any) => ({
+        ...oldData,
+        poll,
+      }));
+    });
+    socket.on('pollResponse', (response) => {
+      queryClient.invalidateQueries({ queryKey: ['pollResponses', response.pollId] });
+    });
+    socket.on('newComment', (comment) => {
+      queryClient.setQueryData(['comments', comment.type, comment.targetId], (oldData: any) => {
+        return oldData ? [...oldData, comment] : [comment];
+      });
+      queryClient.setQueryData(['announcement', comment.targetId], (oldData: any) => ({
+        ...oldData,
+        _count: { ...oldData._count, comments: (oldData._count?.comments || 0) + 1 },
+      }));
+    });
+    return () => {
+      socket.off('newAnnouncement');
+      socket.off('updateAnnouncement');
+      socket.off('deleteAnnouncement');
+      socket.off('newPoll');
+      socket.off('pollResponse');
+      socket.off('newComment');
+    };
+  }, [queryClient]);
+};
+
+export const useGetPollResponses = (pollId: number) => {
+  return useQuery({
+    queryKey: ['pollResponses', pollId],
+    queryFn: () => getPollResponses(pollId),
+    enabled: !!pollId,
   });
 };

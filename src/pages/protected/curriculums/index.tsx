@@ -1,4 +1,3 @@
-import React from 'react'
 import CurriculumList from './components/CurriculumList'
 import ContentContainer from '@/components/commons/containers/ContentContainer'
 

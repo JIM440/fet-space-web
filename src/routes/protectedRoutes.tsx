@@ -1,4 +1,3 @@
-import React from "react";
 import { Route } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -28,12 +27,14 @@ import SearchTeachersPage from "@/pages/protected/search/SearchTeachers";
 import UploadRevisionQuestions from "@/pages/protected/create/UploadRevisionQuestions";
 import UploadCourseContent from "@/pages/protected/create/UploadCourseContent";
 import RevisionQuestions from "@/pages/protected/revisions-questions/RevisionQuestions";
+import CreateAssignment from "@/pages/protected/create/CreateAssignment";
+import CreateAnnouncement from "@/pages/protected/create/CreateCourseAnnouncement";
 
 export const protectedRoutes = (
   <Route element={<ProtectedRoute />}>
     <Route path="/" element={<DashboardLayout />}>
       <Route index element={<Home />} />
-      <Route path="/courses" element={<Courses />} />
+      <Route path="/courses" element={<Courses />}  />
       <Route path="/courses/:courseId" element={<CourseDetailsLayout />}>
         <Route index element={<CourseDetails />} />
         <Route
@@ -50,16 +51,16 @@ export const protectedRoutes = (
           path="/courses/:courseId/assignments"
           element={<Assignments />}
         />
-        <Route
-          path="/courses/:courseId/assignments/:assignmentId"
-          element={<AssignmentDetails />}
-        />
         <Route path="/courses/:courseId/people" element={<People />} />
         <Route
           path="/courses/:courseId/people/:personId"
           element={<UserDetails />}
         />
       </Route>
+        <Route
+          path="/create/:courseId/announcement"
+          element={<CreateAnnouncement />}
+        />
       <Route
         path="/create/:courseId/search/student"
         element={<SearchStudentsPage />}
@@ -73,15 +74,27 @@ export const protectedRoutes = (
         element={<UploadCourseContent />}
       />
       <Route
+        path="/create/:courseId/assignment"
+        element={<CreateAssignment />}
+      />
+      <Route
         path="/create/:courseId/revision-questions"
         element={<UploadRevisionQuestions />}
       />
 
       <Route path="/announcements" element={<Announcements />} />
       <Route
+        path="/course-announcement/:courseId/announcements/:announcementId"
+        element={<CourseAnnouncementDetails />}
+      />
+      <Route
         path="/announcements/:announcementId"
         element={<AnnouncementDetails />}
       />
+        <Route
+          path="/courses/:courseId/assignments/:assignmentId"
+          element={<AssignmentDetails />}
+        />
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/upcoming-deadlines" element={<UpcomingDeadlines />} />
       <Route path="/help-and-support" element={<HelpAndSupport />} />
