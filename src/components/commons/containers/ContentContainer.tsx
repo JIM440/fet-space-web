@@ -6,7 +6,7 @@ interface ContentContainersProps {
 
 const ContentContainer: React.FC<ContentContainersProps> = ({ children }) => {
   return (
-    <div className="max-w-[900px] mx-auto p-[16px] [@media(min-width:300px)]:p-[20px] md:mt-[42px] lg:mt-[100px] bg-background-main">
+    <div className="max-w-[900px] mx-auto p-[16px] [@media(min-width:300px)]:p-[20px] md:mt-[42px] lg:mt-[60px] bg-background-main">
       {children}
     </div>
   );

@@ -26,13 +26,13 @@ const People = () => {
   return (
     <div>
       <ThemedText variant="h3">Teachers</ThemedText>
-      {persons.teachers.map((teacher: any) => (
-        <ProfileCard key={teacher.id} user={teacher} type="teacher" />
+      {persons.teachers.map((teacher: any, index) => (
+        <ProfileCard key={teacher.id} user={teacher} type="teacher" index={index} />
       ))}
       <div className='mb-8' />
       {persons.students.length > 0 && <ThemedText variant="h3" className="mt-4">Students ({persons.students.length})</ThemedText>}
-      {persons.students.map((student: any) => (
-        <ProfileCard key={student.id} user={student} type="student" />
+      {persons.students.map((student: any, index) => (
+        <ProfileCard key={student.id} user={student} type="student" index={index} />
       ))}
       {persons.students.length === 0 && <>
       <ThemedText className='text-center mb-4'>No students have been added yet.</ThemedText>

@@ -14,6 +14,7 @@ import CommentList from "@/components/commons/lists/CommentList";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import BackHeader from "@/components/commons/navigation/BackHeader";
 import ContentContainer from "@/components/commons/containers/ContentContainer";
+import { getTimeAgo } from "@/utils/dateFormatter";
 
 const AnnouncementDetails: React.FC = () => {
   const { announcementId } = useParams<{ announcementId: string }>();
@@ -163,7 +164,7 @@ const AnnouncementDetails: React.FC = () => {
   return (
     <ContentContainer>
       <BackHeader title="Back to announcements" backUrl="/announcements" />
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 mt-6">
         <img
           src=""
           alt=""
@@ -172,15 +173,14 @@ const AnnouncementDetails: React.FC = () => {
         <div className="flex-1">
           <ThemedText variant="h4">{announcement.admin.user.name}</ThemedText>
           <ThemedText variant="caption" className="text-neutral-text-tertiary">
-            {" "}
-            {new Date(announcement.created_at).toLocaleDateString()}
+            {getTimeAgo(announcement.created_at)}
           </ThemedText>
         </div>
       </div>
 
-      <div className="text-gray-300 mb-6">
-        <h2 className="text-xl font-semibold mb-2">{announcement.title}</h2>
-        <p>{announcement.content || "No details provided."}</p>
+      <div className="mb-6">
+        <ThemedText variant="h2" className="text-xl mb-2 text-neutral-text-primary">{announcement.title}</ThemedText>
+        <ThemedText>{announcement.content}</ThemedText>
       </div>
       {announcement.attachments?.length > 0 && (
         <div className="mb-6">
@@ -278,9 +278,6 @@ const AnnouncementDetails: React.FC = () => {
       {/* Poll Section */}
       {announcement.is_poll && announcement.poll && (
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-white mb-4">
-            Poll: {announcement.poll.type}
-          </h2>
           {announcement.poll.options?.map((option) => {
             const votes = voteCounts?.[option.option_id] || 0;
             const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
@@ -291,13 +288,13 @@ const AnnouncementDetails: React.FC = () => {
             );
             return (
               <div key={option.option_id} className="mb-2">
-                <label className="flex items-center space-x-2 text-gray-300">
+                <label className="flex items-center space-x-2 text-neutral-text-secondary">
                   {announcement.poll.allow_multiple_answers ? (
                     <input
                       type="checkbox"
                       checked={hasVoted}
                       onChange={() => handlePollResponse(option.option_id)}
-                      className="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-primary-base bg-background-neutral border-neutral-border rounded"
                       disabled={!isTeacher} // Disable if not a teacher
                     />
                   ) : (
@@ -306,19 +303,19 @@ const AnnouncementDetails: React.FC = () => {
                       name="pollOption"
                       checked={hasVoted}
                       onChange={() => handlePollResponse(option.option_id)}
-                      className="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-primary-base bg-background-neutral border-neutral-border rounded"
                       disabled={!isTeacher} // Disable if not a teacher
                     />
                   )}
                   <span>{option.content}</span>
                 </label>
-                <div className="w-full bg-gray-700 rounded-full h-2.5 mt-1">
+                <div className="w-full bg-background-neutral rounded-full h-2.5 mt-1">
                   <div
-                    className="bg-blue-600 h-2.5 rounded-full"
+                    className="bg-primary-base h-2.5 rounded-full"
                     style={{ width: `${percentage}%` }}
                   ></div>
                 </div>
-                <span className="text-sm text-gray-400">{votes} votes</span>
+                <ThemedText variant="caption">{votes} votes</ThemedText>
               </div>
             );
           })}
@@ -326,29 +323,30 @@ const AnnouncementDetails: React.FC = () => {
       )}
 
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-white mb-4">
+        <ThemedText className="text-neutral-text-secondary mb-4 pt-6 border-t border-neutral-border">
           Comments ({announcement._count?.comments || 0})
-        </h2>
+        </ThemedText>
         <CommentList
           comments={comments}
           isLoading={commentsLoading}
           totalComments={announcement._count?.comments || 0}
         />
-        <div className="flex space-x-3 mt-4">
+        <div className="flex items-center space-x-3 mt-8">
           <input
             type="text"
             placeholder="Add a comment"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="flex-1 px-3 py-2 bg-background-neutral rounded-[100px] text-neutral-text-secondary text-sm mt-4"
+            className="flex-1 px-3 py-2 bg-background-neutral rounded-[100px] text-neutral-text-secondary text-sm"
           />
           {!!newComment && <button
             onClick={handleAddComment}
-            className="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-700"
+            className="flex justify-center items-center bg-primary-base rounded-full w-9 h-9 text-white pl-1"
             disabled={!newComment.trim() || isLoading}
           >
-            Submit
+                      <span className="material-icons">send</span>
           </button>}
+
         </div>
       </div>
     </ContentContainer>

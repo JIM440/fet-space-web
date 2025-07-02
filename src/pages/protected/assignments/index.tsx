@@ -37,12 +37,7 @@ const Assignments = () => {
                 date: assignment.due_date ? new Date(assignment.due_date).toLocaleDateString() : 'No due date',
               }}
             />
-            <Link
-              to={`/courses/${courseId}/assignments/${assignment.assignment_id}`}
-              className="ml-2 px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 inline-block"
-            >
-              View Details
-            </Link>
+
           </div>
         ))
       ) : (<>

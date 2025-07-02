@@ -15,6 +15,15 @@ interface Student {
   isEnrolled: boolean; // Now required from backend
 }
 
+const images = [
+  "https://www.shutterstock.com/image-photo/pure-black-tanzanian-beauty-girl-260nw-2528461553.jpg",
+  "https://stphilips-chessington.org/wp-content/uploads/2023/05/st-5-1.jpg",
+  "https://thumbs.dreamstime.com/b/attractive-dark-skinned-guy-looks-confident-african-american-serious-man-isolated-white-background-toned-image-183891742.jpg",
+  "https://www.shutterstock.com/image-photo/hd-picture-real-african-secondary-260nw-2573919001.jpg",
+  "https://www.shutterstock.com/image-photo/beautiful-young-afro-schoolboy-260nw-585385706.jpg",
+  "https://s3.envato.com/files/241332759/MON1095025.jpg",
+];
+
 const SearchStudentsPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
@@ -58,7 +67,7 @@ const SearchStudentsPage: React.FC = () => {
           placeholder="Search by name or matricule"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="mb-4 border-0 outline-none bg-background-neutral text-sm"
+          className="mb-4 border-0 outline-none bg-background-neutral text-sm text-neutral-text-secondary"
         />
         {isLoading && <InlineSpinner />}
         {error && (
@@ -74,7 +83,7 @@ const SearchStudentsPage: React.FC = () => {
         )}
         {students.length > 0 && (
           <div className="flex flex-col gap-5 mt-8">
-            {students.map((student: Student) => (
+            {students.map((student: Student, index: number) => (
               <div
                 key={student.user_id}
                 className="flex justify-between items-center"
@@ -84,9 +93,9 @@ const SearchStudentsPage: React.FC = () => {
               >
                 <div className="flex flex-row gap-2">
                   <img
-                    src=""
+                    src={images[index]}
                     alt={student.name}
-                    className="w-10 h-10 rounded-full bg-background-neutral text-[10px]"
+                    className="w-10 h-10 object-cover rounded-full bg-background-neutral border border-neutral-border text-[10px]"
                   />
                   <div>
                     <ThemedText

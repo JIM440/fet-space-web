@@ -41,10 +41,6 @@ export const protectedRoutes = (
           path="/courses/:courseId/announcements"
           element={<CourseAnnouncements />}
         />
-        <Route
-          path="/courses/:courseId/announcements/:announcementId"
-          element={<CourseAnnouncementDetails />}
-        />
         <Route path="/courses/:courseId/content" element={<CourseContent />} />
         <Route path="/courses/:courseId/revision-questions" element={<RevisionQuestions />} />
         <Route
@@ -57,6 +53,10 @@ export const protectedRoutes = (
           element={<UserDetails />}
         />
       </Route>
+        <Route
+          path="/courses/:courseId/announcements/:announcementId"
+          element={<CourseAnnouncementDetails />}
+        />
         <Route
           path="/create/:courseId/announcement"
           element={<CreateAnnouncement />}

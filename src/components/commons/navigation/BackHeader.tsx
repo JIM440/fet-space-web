@@ -20,7 +20,7 @@ const BackHeader: React.FC<BackHeaderProps> = ({ title, backUrl }) => {
   };
 
   return (
-    <div className="flex items-center justify-between py-4 mb-6">
+    <div className="flex items-center justify-between py-4">
       <button
         onClick={handleBack}
         className="flex items-center gap-2 text-neutral-text-secondary"

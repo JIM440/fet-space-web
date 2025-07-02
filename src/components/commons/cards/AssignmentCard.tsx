@@ -16,18 +16,18 @@ const AssignmentCard: React.FC<{ assignment: AssignmentProps }> = ({ assignment 
   return (
     <button
       onClick={() => navigate(`/courses/${courseId}/assignments/${assignment.id}/`)} // Updated navigation
-      className="w-full p-4 mb-2 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors"
+      className="w-full p-4 mb-2 border border-neutral-border"
     >
       <div className="flex justify-between items-start">
         <div className="max-w-[80%]">
-          <ThemedText variant="h4" className="line-clamp-1 text-gray-100">
+          <ThemedText variant="h4" className='text-left'>
             {assignment.title}
           </ThemedText>
-          <ThemedText variant="caption" className="line-clamp-2 text-gray-400">
+          <ThemedText variant="caption" className="line-clamp-2 text-left">
             {assignment.description}
           </ThemedText>
         </div>
-        <ThemedText variant="caption" className="text-gray-500">
+        <ThemedText variant="caption" className="text-left">
           Due: {assignment.date}
         </ThemedText>
       </div>

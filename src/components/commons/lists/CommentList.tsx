@@ -35,7 +35,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, isLoading, totalCom
           <li key={comment.comment_id} className="flex gap-2">
             <img src="" alt="" className="w-10 h-10 rounded-full bg-background-neutral" />
             <div className="flex-1">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-5">
                 <ThemedText variant="caption" className="text-neutral-text-tertiary">
               {comment.user.name}
             </ThemedText>

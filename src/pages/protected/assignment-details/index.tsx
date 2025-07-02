@@ -4,6 +4,8 @@ import { useGetAssignmentDetails, useDeleteAssignment } from '@/hooks/api/course
 import ThemedText from '@/components/commons/typography/ThemedText';
 import FileCard from '@/components/commons/cards/FileCard';
 import UpdateAssignment from './components/UpdateAssignment';
+import ContentContainer from '@/components/commons/containers/ContentContainer';
+import BackHeader from '@/components/commons/navigation/BackHeader';
 
 interface Attachment {
   url: string;
@@ -52,33 +54,34 @@ const AssignmentDetails = () => {
   };
 
   if (isLoading) return <div className="text-center py-4 text-black">Loading...</div>;
-  if (error || !assignment) return <ThemedText className="text-center py-4 text-red-500">Error: {error?.message || 'Assignment not found'}</ThemedText>;
+  if (error || !assignment) return <ThemedText className="text-center py-4 text-error">Error: {error?.message || 'Assignment not found'}</ThemedText>;
 
   return (
-    <div className="p-4">
+    <ContentContainer>
+      <BackHeader title='' />
       <div className="flex justify-between items-center mb-4">
         <ThemedText variant="h2" className="text-black">{assignment.title}</ThemedText>
         <div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-black rounded hover:bg-blue-700 mr-2"
+            className="px-4 py-2 text-neutral-text-secondary mr-2"
           >
             Edit
           </button>
           <button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-600 text-black rounded hover:bg-red-700"
+            className="px-4 py-2 text-error"
             disabled={deleteMutation.isPending}
           >
             {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
           </button>
         </div>
       </div>
-      <ThemedText className="mb-4 text-gray-300">{assignment.description || 'No description provided'}</ThemedText>
+      <ThemedText className="mb-4 text-neutral-text-secondary">{assignment.description || 'No description provided'}</ThemedText>
       <ThemedText variant="caption" className="mb-4 text-gray-400">
         Due: {assignment.due_date ? new Date(assignment.due_date).toLocaleDateString() : 'No due date'}
       </ThemedText>
-      <ThemedText variant="h4" className="mb-2 text-gray-200">Attachments</ThemedText>
+      <ThemedText variant="h4" className="mb-2 text-neutral-text-secondary">Attachments</ThemedText>
       {assignment.attachments && assignment.attachments.length > 0 ? (
         assignment.attachments.map((attach, index) => (
           <div key={index} className="mb-2" data-content-id={assignment.assignment_id} data-url={attach.url}>
@@ -95,21 +98,26 @@ const AssignmentDetails = () => {
           </div>
         ))
       ) : (
-        <ThemedText className="text-gray-400">No attachments available</ThemedText>
+        <ThemedText className="text-neutral-text-secondary">No attachments available</ThemedText>
       )}
-      <ThemedText variant="h4" className="mt-4 mb-2 text-gray-200">Submissions</ThemedText>
-      <ThemedText variant="caption" className="mb-2 text-gray-400">Total Submissions: {assignment.totalSubmissions}</ThemedText>
+      <ThemedText variant="h4" className="mt-4 mb-2 text-neutral-text-secondary">Submissions</ThemedText>
+      <ThemedText variant="caption" className="mb-2 text-neutral-text-tertiary">Total Submissions: {assignment.totalSubmissions}</ThemedText>
       {assignment.submissions && assignment.submissions.length > 0 ? (
         assignment.submissions.map((submission, index) => (
-          <div key={index} className="mb-2 p-2 bg-gray-800 rounded">
-            <ThemedText className="text-gray-100">Student: {submission.studentName}</ThemedText>
+          <div key={index} className="my-4 p-2">
+            <div className='flex gap-2'><img src="" alt="" className='bg-background-neutral w-10 h-10 rounded-full' />
+            <div>
+              <ThemedText className="text-neutral-text-secondary"> {submission.studentName}</ThemedText>
+              <ThemedText className="text-neutral-text-secondary"> {submission.studentMatricule}</ThemedText>
+            </div>
+            </div>
             <ThemedText variant="caption" className={`text-${submission.statusColor}-500`}>
               {submission.status} - {new Date(submission.submittedAt).toLocaleDateString()} {new Date(submission.submittedAt).toLocaleTimeString()}
             </ThemedText>
-            <ThemedText className="text-gray-300">Comment: {submission.comment}</ThemedText>
+            {/* <ThemedText className="text-neutral-text-secondary">Comment: {submission.comment}</ThemedText> */}
             {submission.attachments.length > 0 && (
               <div className="mt-2">
-                <ThemedText variant="h5" className="text-gray-200">Attachments</ThemedText>
+                <ThemedText>Attachments</ThemedText>
                 {submission.attachments.map((attach, idx) => (
                   <div key={idx} className="mb-2" data-url={attach.url}>
                     <FileCard
@@ -138,7 +146,7 @@ const AssignmentDetails = () => {
           courseId={courseId}
         />
       )}
-    </div>
+    </ContentContainer>
   );
 };
 

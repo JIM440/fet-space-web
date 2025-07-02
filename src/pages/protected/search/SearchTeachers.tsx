@@ -59,7 +59,7 @@ const SearchTeachersPage: React.FC = () => {
           placeholder="Search by name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="mb-4 border-0 outline-none bg-background-neutral text-sm"
+          className="mb-4 border-0 outline-none bg-background-neutral text-sm text-neutral-text-secondary"
         />
         {isLoading && <InlineSpinner />}
         {error && (

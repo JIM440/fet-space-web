@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         end
         onClick={() => window.innerWidth < 768 && toggleSidebar()} // Close sidebar on link click for mobile
       >
-        <img src={iconSrc} alt={`${children} icon`} className="w-6 h-6" />
+        <img src={iconSrc} alt={`${children} icon`} className="w-5 h-5" />
         <ThemedText>{children}</ThemedText>
       </NavLink>
     );
@@ -51,13 +51,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <X className="h-6 w-6 text-neutral-text-secondary" />
         </button>
 
-        <div className="w-16 h-16 min-h-16 rounded-full bg-background-neutral self-center"></div>
+        {/* <div className="w-16 h-16 min-h-16 rounded-full bg-background-neutral self-center"></div> */}
+        <ThemedText variant="h1" className="text-center my-5">FET SPACE</ThemedText>
 
         {/* links */}
         <div>
           <SidebarLink
             to="/announcements"
-            iconSrc="../../src/assets/icons/courses.svg"
+            iconSrc="../../src/assets/icons/announcements.svg"
           >
             Announcements
           </SidebarLink>
@@ -89,10 +90,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             Help & Support
           </SidebarLink>
         </div>
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="absolute bottom-4 left-4 right-4 border-t border-neutral-border">
         <button
           onClick={logout}
-          className="w-full text-error mt-[auto] py-2 px-4 rounded-md"
+          className="w-full text-error mt-[auto] py-2 px-4 "
         >
           Logout
         </button>

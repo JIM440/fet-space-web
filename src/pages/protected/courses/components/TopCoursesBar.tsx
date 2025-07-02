@@ -41,7 +41,7 @@ const TopCoursesBar = () => {
 
   return (
     <div className="flex flex-row justify-between items-center mb-10">
-      <select className="p-2 text-neutral-text-secondary bg-background-neutral rounded">
+      <select className="p-2 text-neutral-text-secondary bg-background-neutral rounded-md text-[1rem]">
         <option value="All Courses">All Courses</option>
         <option value="Level 200">Level 200</option>
         <option value="Level 300">Level 300</option>
@@ -53,32 +53,62 @@ const TopCoursesBar = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-background-secondary border-1 border-neutral-border p-6 rounded-lg w-96">
-            <h2 className="text-xl font-semibold text-white mb-4">
+          <div className="bg-background-main border border-neutral-border p-6 w-[80%] max-w-[600px] min-w-[200px]]">
+            <ThemedText
+              variant="h2"
+              className="text-xl font-semibold text-neutral-text-secondary mb-6"
+            >
               Create New Course
-            </h2>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Course Code (e.g. CEF 250)"
-              className="w-full px-3 py-2 mb-4 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
-            />
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Course Title"
-              className="w-full px-3 py-2 mb-4 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
-            />
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Course Description"
-              className="w-full h-24 resize-none px-3 py-2 mb-4 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
-            />
-                        {error && (
-              <ThemedText variant="caption" className="text-red-500 mb-4 mt-[-12px">
+            </ThemedText>
+            <div className="mb-4">
+              <label
+                htmlFor="courseCode"
+                className="block text-neutral-text-secondary font-semibold mb-2"
+              >
+                Course Code:
+              </label>
+              <input
+                id="courseCode"
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="e.g. CEF 250"
+                className="w-full px-3 py-2 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="courseTitle"
+                className="block text-neutral-text-secondary font-semibold mb-2"
+              >
+                Course Title:
+              </label>
+              <input
+                id="courseTitle"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter course title"
+                className="w-full px-3 py-2 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="courseDescription"
+                className="block text-neutral-text-secondary font-semibold mb-2"
+              >
+                Course Description:
+              </label>
+              <textarea
+                id="courseDescription"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter course description"
+                className="w-full h-24 resize-none px-3 py-2 bg-background-neutral border border-neutral-border rounded-md text-neutral-text-secondary"
+              />
+            </div>
+            {error && (
+              <ThemedText variant="caption" className="text-red-500 mb-4">
                 {error.message || "Failed to create course"}
               </ThemedText>
             )}
@@ -90,7 +120,7 @@ const TopCoursesBar = () => {
                 onClick={handleCreateCourse}
                 disabled={!code || !title || !description || isLoading}
               >
-                { isLoading ? 'Creating' : 'Create'}
+                {isLoading ? "Creating..." : "Create"}
               </Button>
             </div>
           </div>

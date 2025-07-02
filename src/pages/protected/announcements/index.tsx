@@ -12,6 +12,8 @@ import { api } from "@/utils/api";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import ContentContainer from "@/components/commons/containers/ContentContainer";
 import AddCommentInput from "@/components/commons/inputs/AddCommentInput";
+import { getTimeAgo } from "@/utils/dateFormatter";
+import { useAuth } from "@/context/auth";
 
 const Announcements: React.FC = () => {
   useAnnouncementSocket();
@@ -19,6 +21,9 @@ const Announcements: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutate: respondToPoll } = useRespondToPoll();
+  // Assume user ID and role are available (e.g., from auth context)
+  const { user } = useAuth();
+  const currentUserId = user?.userId; // Replace with actual user ID from auth
 
   // State to store poll responses
   const [pollResponses, setPollResponses] = useState<{ [key: number]: any[] }>(
@@ -77,10 +82,6 @@ const Announcements: React.FC = () => {
     );
   };
 
-  // Assume user ID and role are available (e.g., from auth context)
-  const currentUserId = 1; // Replace with actual user ID from auth
-  const isTeacher = true; // Replace with actual role check
-
   return (
     <ContentContainer>
       <div className="space-y-6 md:mt-[-20px]">
@@ -109,15 +110,13 @@ const Announcements: React.FC = () => {
               key={announcement.announcement_id}
               className={`p-5 cursor-pointer border-1 border-neutral-border }`}
               onClick={() =>
-                navigate(
-                  `/announcements/${announcement.announcement_id}`
-                )
+                navigate(`/announcements/${announcement.announcement_id}`)
               }
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <img
-                    src=""
+                    src="../../src/assets/images/admins/valerie.jpg"
                     alt=""
                     className="w-10 h-10 rounded-full bg-background-neutral"
                   />
@@ -126,7 +125,7 @@ const Announcements: React.FC = () => {
                       {announcement.admin.user.name}
                     </ThemedText>
                     <ThemedText variant="caption">
-                      {new Date(announcement.created_at).toLocaleDateString()}
+                      {getTimeAgo(announcement.created_at)}
                     </ThemedText>
                   </div>
                 </div>
@@ -135,9 +134,11 @@ const Announcements: React.FC = () => {
                 <ThemedText variant="h3" className="text-neutral-text-primary">
                   {announcement.title}
                 </ThemedText>
-                {!announcement.is_poll && <ThemedText className="text-neutral-text-secondary">
-                  {announcement.content}
-                </ThemedText>}
+                {!announcement.is_poll && (
+                  <ThemedText className="text-neutral-text-secondary">
+                    {announcement.content}
+                  </ThemedText>
+                )}
               </div>
               {announcement.is_poll && announcement.poll && (
                 <div className="mb-4">

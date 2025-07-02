@@ -147,7 +147,7 @@ const CreateAnnouncement: React.FC = () => {
 
   return (
     <ContentContainer>
-      <ThemedText variant="h1" className="mb-6">
+      <ThemedText variant="h4" className="mb-6">
         Create Course Announcement
       </ThemedText>
       {error && <p className="text-error mb-4">{error.message}</p>}

@@ -15,7 +15,7 @@ const DashboardLayout = () => {
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex-1">
         <TopBar toggleSidebar={toggleSidebar} />
-        <main className="h-[calc(100vh-65px)] overflow-y-auto">
+        <main className="h-[calc(100vh-70px)] overflow-y-auto">
           <Outlet />
         </main>
       </div>

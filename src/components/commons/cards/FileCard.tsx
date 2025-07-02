@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ThemedText from '@/components/commons/typography/ThemedText';
+import { getTimeAgo } from '@/utils/dateFormatter';
 
 interface FileProps {
   id: number;
@@ -57,8 +58,8 @@ const FileCard: React.FC<{ file: FileProps }> = ({ file }) => {
 
   return (
     <>
-      <div className="flex items-center gap-2 p-4 bg-gray-800 rounded-lg">
-        <img src={getIcon(file.type)} alt={`${file.type} icon`} className="w-6 h-6" />
+      <div className="flex items-center gap-2 mt-2">
+        <img src={getIcon(file.type)} alt={`${file.type} icon`} className="w-6 h-6 bg-background-neutral" />
         <div
           className="flex-1 cursor-pointer"
           onClick={() => {
@@ -73,7 +74,7 @@ const FileCard: React.FC<{ file: FileProps }> = ({ file }) => {
           <div className="flex gap-4 text-sm text-gray-400">
             <ThemedText variant="caption">{file.pages} pages</ThemedText>
             <ThemedText variant="caption">{file.size}</ThemedText>
-            {file.date && <ThemedText variant="caption">{file.date}</ThemedText>}
+            {file.date && <ThemedText variant="caption">{getTimeAgo(file.date)}</ThemedText>}
           </div>
         </div>
         <a
