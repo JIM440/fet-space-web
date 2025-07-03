@@ -5,6 +5,7 @@ import ThemedText from "@/components/commons/typography/ThemedText";
 import { uploadToCloudinary, mimeToFileTypeMap } from "@/utils/cloudinary"; // Adjust import path
 import { Button } from "@/components/ui/button";
 import ContentContainer from "@/components/commons/containers/ContentContainer";
+import BackHeader from "@/components/commons/navigation/BackHeader";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -87,6 +88,7 @@ const CreateAssignment = () => {
 
   return (
     <ContentContainer>
+            <BackHeader title="" />
       <ThemedText variant="h4" className="mb-4 text-neutral-text-secondary">
         Create Assignment
       </ThemedText>

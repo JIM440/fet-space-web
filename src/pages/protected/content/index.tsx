@@ -88,7 +88,7 @@ const CourseContent: React.FC = () => {
               />
               <button
                 onClick={() => handleDelete(content.content_id)}
-                className="ml-2 text-red-500 hover:text-red-700"
+                className="ml-2 text-error"
                 aria-label="Delete content"
               >
                 ×

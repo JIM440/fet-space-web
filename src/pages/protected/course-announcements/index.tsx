@@ -62,6 +62,9 @@ const CourseAnnouncements: React.FC = () => {
 
   if (isLoading) return <InlineSpinner />;
   if (error) return <ErrorComponent message={`Error: ${error.message || 'Failed to load assignments'}`} onRetry={refetch} />
+    if (!announcements?.length || announcements.length === 0)
+    return <ThemedText className="text-center">No announcements found.</ThemedText>;
+
 
   return (
     <ContentContainer>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ThemedText from '@/components/commons/typography/ThemedText';
+import { getTimeAgo } from '@/utils/dateFormatter';
 
 interface Comment {
   id: number;
@@ -19,7 +20,7 @@ const CommentCard: React.FC<{ comment: Comment }> = ({ comment }) => {
             {comment.author}
           </ThemedText>
           <ThemedText variant="caption" className="text-gray-500 dark:text-gray-400">
-            {comment.timestamp}
+            {getTimeAgo(comment.timestamp)}
           </ThemedText>
         </div>
         <ThemedText className="text-gray-700 dark:text-gray-300">{comment.text}</ThemedText>

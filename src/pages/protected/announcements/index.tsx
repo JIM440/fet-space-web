@@ -55,11 +55,12 @@ const Announcements: React.FC = () => {
     };
     if (pollIds.length > 0) fetchPollResponses();
   }, [pollIds]);
+  console.log(announcements)
 
   if (isLoading) return <p className="text-white">Loading...</p>;
   if (error) return <p className="text-error">{error.message}</p>;
-  if (!announcements?.length)
-    return <p className="text-white">No announcements found.</p>;
+  if (!announcements?.length || announcements.length === 0)
+    return <ThemedText className="text-center">No announcements found.</ThemedText>;
 
   const handlePollResponse = (
     announcementId: number,

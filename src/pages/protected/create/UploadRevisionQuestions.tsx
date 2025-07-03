@@ -4,6 +4,7 @@ import ContentContainer from "@/components/commons/containers/ContentContainer";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import { Button } from "@/components/ui/button";
 import { useUploadRevisionQuestions } from "@/hooks/api/courses";
+import BackHeader from "@/components/commons/navigation/BackHeader";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -54,6 +55,7 @@ const UploadRevisionQuestions: React.FC = () => {
 
   return (
     <ContentContainer>
+      <BackHeader title="Upload Question" />
       <div className="h-[calc(100vh-110px)] flex flex-col items-center justify-center">
         <ThemedText variant="h4" className="mb-4">
           Upload Revision Questions

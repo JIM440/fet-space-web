@@ -4,6 +4,7 @@ import ContentContainer from "@/components/commons/containers/ContentContainer";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import { Button } from "@/components/ui/button";
 import { useUploadCourseContent } from "@/hooks/api/courses";
+import BackHeader from "@/components/commons/navigation/BackHeader";
 
 const allowedFileTypes = [
   "application/pdf",
@@ -54,6 +55,7 @@ const UploadCourseContent: React.FC = () => {
 
   return (
     <ContentContainer>
+            <BackHeader title="Upload Content" />
       <div className="h-[calc(100vh-110px)] flex flex-col items-center justify-center">
         <ThemedText variant="h4">Upload Course Content</ThemedText>
         {error && (

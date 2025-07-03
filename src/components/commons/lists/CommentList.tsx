@@ -1,6 +1,7 @@
 import React from "react";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import InlineSpinner from "../loader/InlineSpinner";
+import { getTimeAgo } from "@/utils/dateFormatter";
 
 interface Comment {
   comment_id: number;
@@ -40,8 +41,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, isLoading, totalCom
               {comment.user.name}
             </ThemedText>
             <ThemedText variant="caption" className="text-neutral-text-tertiary">
-              {'10 min'}
-              {/* {comment?.created_at.toLocaleDateString() || '10min'} */}
+              {getTimeAgo(comment.created_at)}
             </ThemedText>
             </div>
             <ThemedText className="text-neutral-text-primary">{comment.content}</ThemedText>

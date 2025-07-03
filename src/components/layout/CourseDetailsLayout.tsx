@@ -76,14 +76,14 @@ const CourseDetailsLayout: React.FC = () => {
       <div>
         <div className="px-5 mt-1">
           <img
-            src="../../src/assets/images/hci.jpg"
+            src="https://www.figma.com/community/resource/bf3b5e7b-4896-4e54-b0d5-7470cc65537d/thumbnail"
             alt="Course Banner"
             className="w-[100%] object-cover bg-background-neutral max-w-[850px] mx-auto border border-neutral-border"
           />
         </div>
         <button
           onClick={() => setModalVisible(true)}
-          className="absolute bottom-6 right-4 md:right-20 bg-primary-base text-white p-3 rounded-full shadow-md h-12"
+          className="z-5 absolute bottom-6 right-4 md:right-20 bg-primary-base text-white p-3 rounded-full shadow-md h-12"
         >
           <span className="material-icons">add</span>
         </button>

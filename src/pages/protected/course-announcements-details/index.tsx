@@ -15,6 +15,7 @@ import BackHeader from "@/components/commons/navigation/BackHeader";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import { getTimeAgo } from "@/utils/dateFormatter";
 import CommentList from "@/components/commons/lists/CommentList";
+import FullScreenSpinner from "@/components/commons/loader/FullScreenSpinner";
 
 const CourseAnnouncementDetails: React.FC = () => {
   const { courseId, announcementId } = useParams<{
@@ -81,10 +82,10 @@ const CourseAnnouncementDetails: React.FC = () => {
   }, [announcement]);
 
   if (isLoading)
-    return <p className="text-white p-4">Loading announcement...</p>;
+    return <FullScreenSpinner />;
   if (error) return <p className="text-error p-4">{error.message}</p>;
   if (!announcement)
-    return <p className="text-white p-4">Announcement not found.</p>;
+    return <ThemedText className="p-4">Announcement not found.</ThemedText>;
 
   const handleAddComment = () => {
     if (newComment.trim() === "") return;

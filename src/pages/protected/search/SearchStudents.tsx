@@ -6,6 +6,7 @@ import ContentContainer from "@/components/commons/containers/ContentContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import InlineSpinner from "@/components/commons/loader/InlineSpinner";
+import BackHeader from "@/components/commons/navigation/BackHeader";
 
 interface Student {
   user_id: number;
@@ -58,6 +59,9 @@ const SearchStudentsPage: React.FC = () => {
 
   return (
     <ContentContainer>
+      <BackHeader
+        title=""
+      />
       <div>
         <ThemedText variant="h1" className="mb-4 text-xl font-medium">
           Search Students

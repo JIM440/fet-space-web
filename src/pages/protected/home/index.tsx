@@ -5,7 +5,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        navigate("/courses", { replace: true });
+        navigate("/announcements", { replace: true });
     }, [navigate]);
 
     return null;

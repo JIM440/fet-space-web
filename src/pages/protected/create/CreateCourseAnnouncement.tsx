@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ContentContainer from "@/components/commons/containers/ContentContainer";
 import ThemedText from "@/components/commons/typography/ThemedText";
 import { Button } from "@/components/ui/button";
+import BackHeader from "@/components/commons/navigation/BackHeader";
 
 const CreateAnnouncement: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -147,6 +148,7 @@ const CreateAnnouncement: React.FC = () => {
 
   return (
     <ContentContainer>
+            <BackHeader title="" />
       <ThemedText variant="h4" className="mb-6">
         Create Course Announcement
       </ThemedText>

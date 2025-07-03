@@ -11,6 +11,7 @@ import {
   uploadRevisionQuestions,
   api,
 } from "@/utils/api/";
+import { useNavigate } from "react-router-dom";
 
 export const useTeacherCourses = () => {
   return useQuery({
@@ -48,6 +49,7 @@ export const useGetCourseContents = (courseId: number) => {
 
 export const useUploadCourseContent = () => {
   const queryClient = useQueryClient();
+    const navigate = useNavigate();
   return useMutation({
     mutationFn: (data: { courseId: number; file: File }) =>
       uploadCourseContent(data.courseId, data.file),
@@ -55,6 +57,7 @@ export const useUploadCourseContent = () => {
       queryClient.invalidateQueries({
         queryKey: ["courseContents", variables.courseId],
       });
+      navigate(`/courses/${variables.courseId}/content`);
     },
   });
 };
